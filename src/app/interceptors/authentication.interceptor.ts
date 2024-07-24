@@ -1,6 +1,11 @@
-import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandlerFn,
+  HttpRequest,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, Observable, tap } from 'rxjs';
+import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 export function authenticationInterceptor(
@@ -8,46 +13,59 @@ export function authenticationInterceptor(
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
   const authService = inject(AuthService);
-  const authAccessToken = authService.getAccessToken();
-  const newRequest = req.clone({
-    setHeaders: {
-      Authorization: `Bearer ${authAccessToken}`,
-    },
-  });
+  const newReq = addAccessTokenToRequest(req, authService);
 
-  return next(newRequest).pipe(
-    catchError((error) => {
-      const loginOrRefresh = requestToLoginOrRefreshToken(authService, req.url);
-      if (loginOrRefresh) {
-        return error;
-      }
-      if (error.status !== 401) {
-        return error;
-      }
-
-      return authService.refreshToken().pipe(
-        tap((response) => {
-          authService.setAccessToken(response.accessToken);
-          return next(
-            req.clone({
-              setHeaders: {
-                Authorization: `Bearer ${response.accessToken}`,
-              },
-            })
-          );
-        }),
-        catchError((error) => {
-          authService.logout();
-          return error;
-        })
-      );
+  return next(newReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      const loginOrRefresh = requestToLoginOrRefreshToken(req.url, authService);
+      if (loginOrRefresh) throwError(() => error);
+      if (error instanceof HttpErrorResponse && error.status !== 401)
+        throwError(() => error);
+      return retryRequestWithNewAccessToken(newReq, next, authService);
     })
   );
 }
 
+const addAccessTokenToRequest = (
+  req: HttpRequest<unknown>,
+  authService: AuthService
+): HttpRequest<unknown> => {
+  const authAccessToken = authService.getAccessToken();
+  if (!authAccessToken) return req;
+
+  const newReq = req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${authAccessToken}`,
+    },
+  });
+  return newReq;
+};
+
+const retryRequestWithNewAccessToken = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+  authService: AuthService
+) => {
+  return authService.refreshToken().pipe(
+    switchMap((response) => {
+      authService.setAccessToken(response.accessToken);
+      const retryRequest = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${response.accessToken}`,
+        },
+      });
+      return next(retryRequest);
+    }),
+    catchError((error) => {
+      authService.logout();
+      return throwError(() => error);
+    })
+  );
+};
+
 const requestToLoginOrRefreshToken = (
-  authService: AuthService,
-  url: string
+  url: string,
+  authService: AuthService
 ) => {
   if (url.includes('refreshtoken')) {
     authService.logout();
