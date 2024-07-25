@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LocalStorage } from '../enums/local-storage.enum';
@@ -15,8 +15,9 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
+  private http: HttpClient = inject(HttpClient);
+  private router: Router = inject(Router);
   private readonly baseUrl = 'http://localhost:3000/';
-  constructor(private http: HttpClient, private router: Router) {}
 
   login(user: LoginPayload): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.baseUrl + 'api/auth/login', user);

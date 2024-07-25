@@ -30,9 +30,6 @@ export class RegisterComponent {
   private authService: AuthService = inject(AuthService);
   private messageService: MessageService = inject(MessageService);
   private router: Router = inject(Router);
-  name: string = '';
-  email: string = '';
-  password: string = '';
   registerForm = this.initForm();
 
   initForm() {
