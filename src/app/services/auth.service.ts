@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LocalStorage } from '../enums/local-storage.enum';
@@ -10,11 +11,15 @@ import {
   RegisterResponse,
 } from '../interfaces/authentication.interface';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
+  private readonly baseUrl = 'http://localhost:3000/';
   constructor(private http: HttpClient, private router: Router) {}
 
   login(user: LoginPayload): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>('/api/auth/login', user);
+    return this.http.post<LoginResponse>(this.baseUrl + 'api/auth/login', user);
   }
 
   logout() {
@@ -25,7 +30,7 @@ export class AuthService {
 
   register(registerPayload: RegisterPayload): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(
-      '/api/auth/register',
+      this.baseUrl + 'api/auth/register',
       registerPayload
     );
   }
@@ -33,9 +38,12 @@ export class AuthService {
   refreshToken(): Observable<RefreshTokenResponse> {
     const refreshToken =
       localStorage.getItem(LocalStorage.RefreshToken) ?? null;
-    return this.http.post<RefreshTokenResponse>('/api/auth/refresh-token', {
-      refreshToken,
-    });
+    return this.http.post<RefreshTokenResponse>(
+      this.baseUrl + 'api/auth/refresh-token',
+      {
+        refreshToken,
+      }
+    );
   }
 
   getAccessToken() {

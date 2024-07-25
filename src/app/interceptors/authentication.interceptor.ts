@@ -17,10 +17,13 @@ export function authenticationInterceptor(
 
   return next(newReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      const loginOrRefresh = requestToLoginOrRefreshToken(req.url, authService);
-      if (loginOrRefresh) throwError(() => error);
+      const loginOrRefreshOrRegister = requestToLoginOrRefreshToken(
+        req.url,
+        authService
+      );
+      if (loginOrRefreshOrRegister) return throwError(() => error);
       if (error instanceof HttpErrorResponse && error.status !== 401)
-        throwError(() => error);
+        return throwError(() => error);
       return retryRequestWithNewAccessToken(newReq, next, authService);
     })
   );
@@ -67,8 +70,12 @@ const requestToLoginOrRefreshToken = (
   url: string,
   authService: AuthService
 ) => {
-  if (url.includes('refreshtoken')) {
+  if (url.includes('refresh-token')) {
     authService.logout();
   }
-  return url.includes('refreshtoken') || url.includes('login');
+  return (
+    url.includes('refresh-token') ||
+    url.includes('login') ||
+    url.includes('register')
+  );
 };
