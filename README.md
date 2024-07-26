@@ -1,5 +1,7 @@
 # Frontend Authentication
 
+- Não foi o foco da aplicação desenvolver válidações de formulário, estilização organizada.
+
 Aplicação foi contruída com o objetivo de construir as seguintes etapas:
 
 - Os fluxo de cadastro e login do usuário.
@@ -12,6 +14,8 @@ Aplicação foi contruída com o objetivo de construir as seguintes etapas:
 | ---------------------------------------------------------------------------- | ------------------------------------------------------- |
 | ![Página de registro do usuário](/src/assets/image.png)                      | ![Página de acesso do usuário](/src/assets/image-1.png) |
 | ![Página interna quando o usuário acessa o sistema](/src/assets/image-2.png) |                                                         |
+
+Este projeto é necessário rodar com o backend projetado para essa aplicação front-end. [Back-end NodeJS](https://github.com/BernardoSemiOficial/backend-nodejs-access-token-authentication)
 
 Este projeto foi gerado com [Angular CLI](https://github.com/angular/angular-cli) versão 18.0.2.
 
