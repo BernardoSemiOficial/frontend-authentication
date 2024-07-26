@@ -9,6 +9,7 @@ Aplicação foi contruída com o objetivo de construir as seguintes etapas:
 - Adicionar interceptadores nas requisição para adicionar access token para as requisições.
 - Renovar o access token, realizando uma requisição ao backend, caso esteja inválido.
 - Salvar no localstorage o access token e o refresh token para conservar os dados caso recarregue a aplicação.
+- Utilizando novas features da nova versão 18 do Angular.
 
 |                                                                              |                                                         |
 | ---------------------------------------------------------------------------- | ------------------------------------------------------- |
