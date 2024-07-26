@@ -52,15 +52,14 @@ export class LoginComponent {
     this.authService.login(payload).subscribe({
       next: (data: LoginResponse) => {
         this.authService.setTokens(data);
+        this.router.navigate(['/dashboard']);
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
           detail: 'User logged in',
         });
-        this.router.navigate(['/dashboard']);
       },
       error: (error: HttpErrorResponse) => {
-        console.log(error);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',

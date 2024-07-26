@@ -21,7 +21,8 @@ export const routes: Routes = [
       ),
   },
   {
-    path: '**',
+    path: '',
+    pathMatch: 'full',
     redirectTo: 'login',
   },
 ];

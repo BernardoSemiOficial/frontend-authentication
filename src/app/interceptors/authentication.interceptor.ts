@@ -61,6 +61,7 @@ const retryRequestWithNewAccessToken = (
     }),
     catchError((error) => {
       authService.logout();
+      console.log('retryRequestWithNewAccessToken');
       return throwError(() => error);
     })
   );
@@ -70,9 +71,7 @@ const requestToLoginOrRefreshToken = (
   url: string,
   authService: AuthService
 ) => {
-  if (url.includes('refresh-token')) {
-    authService.logout();
-  }
+  console.log('requestToLoginOrRefreshToken');
   return (
     url.includes('refresh-token') ||
     url.includes('login') ||

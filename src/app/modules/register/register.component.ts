@@ -6,7 +6,6 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { ToastModule } from 'primeng/toast';
 import { RegisterPayload } from '../../interfaces/authentication.interface';
 import { AuthService } from '../../services/auth.service';
 
@@ -18,7 +17,6 @@ import { AuthService } from '../../services/auth.service';
     InputTextModule,
     PasswordModule,
     ButtonModule,
-    ToastModule,
     RouterModule,
   ],
   providers: [AuthService, MessageService],

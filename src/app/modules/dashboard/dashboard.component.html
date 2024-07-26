@@ -1,8 +1,19 @@
-<p>dashboard works!</p>
-<p-button
-  (click)="logoutUser()"
-  (keydown)="logoutUser()"
-  class="block mt-4"
-  size="large"
-  label="Logout"
-/>
+<section class="flex flex-column align-items-center justify-content-center">
+  <p>dashboard works!</p>
+  <div class="flex gap-2">
+    <p-button
+      (click)="getAllUsers()"
+      (keydown)="getAllUsers()"
+      class="block mt-4"
+      size="large"
+      label="Get all users"
+    />
+    <p-button
+      (click)="logoutUser()"
+      (keydown)="logoutUser()"
+      class="block mt-4"
+      size="large"
+      label="Logout"
+    />
+  </div>
+</section>
