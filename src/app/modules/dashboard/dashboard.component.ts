@@ -1,9 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { LocalStorage } from '../../enums/local-storage.enum';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 
@@ -16,34 +14,14 @@ import { UserService } from '../../services/user.service';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
-  private userService: UserService = inject(UserService);
-  private authService: AuthService = inject(AuthService);
-  private messageService: MessageService = inject(MessageService);
-  private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  private readonly userService: UserService = inject(UserService);
+  private readonly authService: AuthService = inject(AuthService);
+  private readonly messageService: MessageService = inject(MessageService);
 
   githubCode!: string | null;
 
   ngOnInit() {
     this.getAllUsers();
-    this.getGithubCode();
-  }
-
-  getGithubCode() {
-    this.githubCode =
-      this.activatedRoute.snapshot.queryParamMap.get('code') ?? null;
-    this.getUserGithub();
-  }
-
-  getUserGithub() {
-    if (this.githubCode === null) return;
-    this.authService.loginGithub(this.githubCode).subscribe({
-      next(data) {
-        localStorage.setItem(
-          LocalStorage.AccessToken,
-          `${data.tokenType} ${data.token}`
-        );
-      },
-    });
   }
 
   getAllUsers() {
