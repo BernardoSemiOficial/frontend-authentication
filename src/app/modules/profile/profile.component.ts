@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { UserType } from '../../interfaces/user.interface';
+import { UserGithub } from '../../interfaces/user.interface';
 
 @Component({
   selector: 'app-profile',
@@ -9,5 +9,5 @@ import { UserType } from '../../interfaces/user.interface';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
-  @Input() user!: UserType;
+  @Input() user!: UserGithub;
 }

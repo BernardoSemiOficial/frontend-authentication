@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LocalStorage } from '../../enums/local-storage.enum';
+import { MessageService } from 'primeng/api';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -13,6 +13,7 @@ import { AuthService } from '../../services/auth.service';
 export class LoadingPageComponent implements OnInit {
   private readonly authService: AuthService = inject(AuthService);
   private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  private readonly messageService: MessageService = inject(MessageService);
   private readonly router: Router = inject(Router);
 
   githubCode!: string | null;
@@ -31,11 +32,13 @@ export class LoadingPageComponent implements OnInit {
     if (this.githubCode === null) return;
     this.authService.loginGithub(this.githubCode).subscribe({
       next: (data) => {
-        localStorage.setItem(
-          LocalStorage.AccessToken,
-          `${data.tokenType} ${data.token}`
-        );
+        this.authService.setTokens(data);
         this.router.navigate(['/dashboard']);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'User logged in',
+        });
       },
       error: (error) => {
         console.log(error);

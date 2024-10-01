@@ -1,3 +1,5 @@
+import { UserGithub } from './user.interface';
+
 export interface LoginPayload {
   email: string;
   password: string;
@@ -6,6 +8,12 @@ export interface LoginPayload {
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface LoginGithubResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: UserGithub;
 }
 
 export interface RegisterPayload {
