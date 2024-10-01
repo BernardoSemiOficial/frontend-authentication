@@ -72,4 +72,8 @@ export class LoginComponent {
   redirectToGithub() {
     this.authService.redirectToGithub();
   }
+
+  redirectToGoogle() {
+    this.authService.redirectToGoogle();
+  }
 }
