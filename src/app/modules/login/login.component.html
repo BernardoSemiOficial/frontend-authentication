@@ -39,4 +39,14 @@
   <div class="text-center mt-4">
     <a routerLink="/register">create an account now</a>
   </div>
+  <p-button
+    (click)="redirectToGithub()"
+    (keydown)="redirectToGithub()"
+    styleClass="w-full"
+    class="block mt-4"
+    severity="secondary"
+    size="large"
+    icon="pi pi-github"
+    label="sign in with github"
+  />
 </section>

@@ -59,4 +59,21 @@ export class AuthService {
   setAccessToken(accessToken: string) {
     localStorage.setItem(LocalStorage.AccessToken, accessToken);
   }
+
+  redirectToGithub() {
+    const randomUUID = Math.random() * 100;
+    const clientId = 'Ov23liH1LnBmHjiEZ9nS';
+    const redirectUrl = 'http://localhost:4200/loading';
+    const scope = 'read:user&20user:email';
+    const AUTH_URL = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUrl}&scope=${scope}&state=${randomUUID}`;
+    window.location.replace(AUTH_URL);
+  }
+
+  loginGithub(code: string): Observable<any> {
+    return this.http.post<any>(
+      this.baseUrl +
+        `api/auth/github?code=${code}&state=YOUR_RANDOMLY_GENERATED_STATE`,
+      null
+    );
+  }
 }

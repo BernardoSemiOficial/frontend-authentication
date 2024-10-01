@@ -68,4 +68,8 @@ export class LoginComponent {
       },
     });
   }
+
+  redirectToGithub() {
+    this.authService.redirectToGithub();
+  }
 }

@@ -15,6 +15,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'loading',
+    loadComponent: () =>
+      import('./modules/loading-page/loading-page.component').then(
+        (m) => m.LoadingPageComponent
+      ),
+  },
+  {
     path: 'dashboard',
     canActivate: [canActivateAuth],
     loadComponent: () =>
