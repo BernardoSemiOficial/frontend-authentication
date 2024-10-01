@@ -16,4 +16,9 @@
       label="Logout"
     />
   </div>
+  <div class="flex gap-2">
+    @if(userLogged) {
+    <app-profile [user]="userLogged"></app-profile>
+    }
+  </div>
 </section>

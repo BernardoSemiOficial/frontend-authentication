@@ -33,6 +33,7 @@ export class LoadingPageComponent implements OnInit {
     this.authService.loginGithub(this.githubCode).subscribe({
       next: (data) => {
         this.authService.setTokens(data);
+        this.authService.userLogged.set(data.user);
         this.router.navigate(['/dashboard']);
         this.messageService.add({
           severity: 'success',

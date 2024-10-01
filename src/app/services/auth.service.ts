@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LocalStorage } from '../enums/local-storage.enum';
@@ -11,14 +11,17 @@ import {
   RegisterPayload,
   RegisterResponse,
 } from '../interfaces/authentication.interface';
+import { UserGithub } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private http: HttpClient = inject(HttpClient);
-  private router: Router = inject(Router);
+  private readonly http: HttpClient = inject(HttpClient);
+  private readonly router: Router = inject(Router);
   private readonly baseUrl = 'http://localhost:3000/';
+
+  userLogged = signal<UserGithub | null>(null);
 
   login(user: LoginPayload): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.baseUrl + 'api/auth/login', user);
