@@ -17,9 +17,11 @@ export class LoadingPageComponent implements OnInit {
   private readonly router: Router = inject(Router);
 
   githubCode!: string | null;
+  googleCode!: string | null;
 
   ngOnInit() {
     this.getGithubCode();
+    this.getGoogleCode();
   }
 
   getGithubCode() {
@@ -28,9 +30,35 @@ export class LoadingPageComponent implements OnInit {
     this.getUserGithub();
   }
 
+  getGoogleCode() {
+    this.googleCode =
+      this.activatedRoute.snapshot.queryParamMap.get('code') ?? null;
+    this.getUserGoogle();
+  }
+
   getUserGithub() {
     if (this.githubCode === null) return;
     this.authService.loginGithub(this.githubCode).subscribe({
+      next: (data) => {
+        this.authService.setTokens(data);
+        this.authService.userLogged.set(data.user);
+        this.router.navigate(['/dashboard']);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'User logged in',
+        });
+      },
+      error: (error) => {
+        console.log(error);
+        this.logoutUser();
+      },
+    });
+  }
+
+  getUserGoogle() {
+    if (this.googleCode === null) return;
+    this.authService.loginGoogle(this.googleCode).subscribe({
       next: (data) => {
         this.authService.setTokens(data);
         this.authService.userLogged.set(data.user);

@@ -73,10 +73,25 @@ export class AuthService {
     window.location.replace(AUTH_URL);
   }
 
+  redirectToGoogle() {
+    this.http.get(this.baseUrl + 'api/auth/google').subscribe((data: any) => {
+      console.log(data);
+      window.location.replace(data);
+    });
+  }
+
   loginGithub(code: string): Observable<LoginGithubResponse> {
     return this.http.post<LoginGithubResponse>(
       this.baseUrl +
         `api/auth/github?code=${code}&state=YOUR_RANDOMLY_GENERATED_STATE`,
+      null
+    );
+  }
+
+  loginGoogle(code: string): Observable<LoginGithubResponse> {
+    return this.http.post<LoginGithubResponse>(
+      this.baseUrl +
+        `api/auth/google?code=${code}&state=YOUR_RANDOMLY_GENERATED_STATE`,
       null
     );
   }
