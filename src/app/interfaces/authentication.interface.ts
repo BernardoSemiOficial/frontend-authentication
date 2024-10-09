@@ -1,4 +1,4 @@
-import { UserGithub } from './user.interface';
+import { UserGithub, UserGoogle } from './user.interface';
 
 export interface LoginPayload {
   email: string;
@@ -14,6 +14,16 @@ export interface LoginGithubResponse {
   accessToken: string;
   refreshToken: string;
   user: UserGithub;
+}
+
+export interface GenerateAuthUrlGoogleResponse {
+  url: string;
+}
+
+export interface LoginGoogleResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: UserGoogle;
 }
 
 export interface RegisterPayload {

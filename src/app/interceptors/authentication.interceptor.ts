@@ -17,6 +17,7 @@ export function authenticationInterceptor(
 
   return next(newReq).pipe(
     catchError((error: HttpErrorResponse) => {
+      console.log(error);
       const loginOrRefreshOrRegister = requestToLoginOrRefreshToken(
         req.url,
         authService

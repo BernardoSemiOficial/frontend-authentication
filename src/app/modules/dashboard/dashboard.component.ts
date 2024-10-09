@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { UserGithub } from '../../interfaces/user.interface';
+import { UserGithub, UserGoogle } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { ProfileComponent } from '../profile/profile.component';
@@ -22,11 +22,13 @@ export class DashboardComponent implements OnInit {
   private readonly messageService: MessageService = inject(MessageService);
 
   githubCode!: string | null;
-  userLogged!: UserGithub | null;
+  userLoggedGithub!: UserGithub | null;
+  userLoggedGoogle!: UserGoogle | null;
 
   constructor() {
     effect(() => {
-      this.userLogged = this.authService.userLogged();
+      this.userLoggedGithub = this.authService.userLoggedGithub();
+      this.userLoggedGoogle = this.authService.userLoggedGoogle();
     });
   }
 

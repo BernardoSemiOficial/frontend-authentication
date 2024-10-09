@@ -17,8 +17,16 @@
     />
   </div>
   <div class="flex gap-2">
-    @if(userLogged) {
-    <app-profile [user]="userLogged"></app-profile>
+    @if(userLoggedGithub) {
+    <app-profile
+      [type]="'github'"
+      [userGithub]="userLoggedGithub"
+    ></app-profile>
+    } @if(userLoggedGoogle) {
+    <app-profile
+      [type]="'google'"
+      [userGoogle]="userLoggedGoogle"
+    ></app-profile>
     }
   </div>
 </section>
