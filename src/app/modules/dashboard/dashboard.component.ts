@@ -1,5 +1,4 @@
 import { CommonModule, JsonPipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -37,23 +36,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllUsers() {
-    this.userService.getUsers().subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'User logged in',
-        });
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Invalid credentials',
-        });
-      },
-    });
+    this.userService.getUsers().subscribe();
   }
 
   logoutUser() {

@@ -23,8 +23,12 @@ export class AuthService {
   private readonly router: Router = inject(Router);
   private readonly baseUrl = 'http://localhost:3000/';
 
-  userLoggedGithub = signal<UserGithub | null>(null);
-  userLoggedGoogle = signal<UserGoogle | null>(null);
+  userLoggedGithub = signal<UserGithub | null>(
+    this.getUserLocalStorage() as UserGithub
+  );
+  userLoggedGoogle = signal<UserGoogle | null>(
+    this.getUserLocalStorage() as UserGoogle
+  );
 
   login(user: LoginPayload): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.baseUrl + 'api/auth/login', user);
@@ -33,6 +37,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem(LocalStorage.AccessToken);
     localStorage.removeItem(LocalStorage.RefreshToken);
+    localStorage.removeItem(LocalStorage.User);
     this.router.navigate(['/login']);
   }
 
@@ -101,5 +106,11 @@ export class AuthService {
         `api/auth/google?code=${code}&state=YOUR_RANDOMLY_GENERATED_STATE`,
       null
     );
+  }
+
+  getUserLocalStorage(): UserGithub | UserGoogle | null {
+    const userString = localStorage.getItem(LocalStorage.User);
+    const user = userString ? (JSON.parse(userString) as UserGithub) : null;
+    return user;
   }
 }

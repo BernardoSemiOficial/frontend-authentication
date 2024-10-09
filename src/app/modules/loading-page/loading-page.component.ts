@@ -1,6 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+
+import { AuthenticationProviders } from '../../enums/authentication-providers';
+import { LocalStorage } from '../../enums/local-storage.enum';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -16,20 +19,21 @@ export class LoadingPageComponent implements OnInit {
   private readonly messageService: MessageService = inject(MessageService);
   private readonly router: Router = inject(Router);
 
-  provider!: 'google' | 'github' | string | null;
+  provider!: AuthenticationProviders | null;
   githubCode!: string | null;
   googleCode!: string | null;
 
   ngOnInit() {
     this.getProvider();
-    console.log(this.provider);
     if (this.provider === 'github') this.getGithubCode();
     else if (this.provider === 'google') this.getGoogleCode();
   }
 
   getProvider() {
     this.provider =
-      this.activatedRoute.snapshot.queryParamMap.get('provider') ?? null;
+      (this.activatedRoute.snapshot.queryParamMap.get(
+        'provider'
+      ) as AuthenticationProviders) ?? null;
   }
 
   getGithubCode() {
@@ -48,6 +52,7 @@ export class LoadingPageComponent implements OnInit {
     if (this.githubCode === null) return;
     this.authService.loginGithub(this.githubCode).subscribe({
       next: (data) => {
+        localStorage.setItem(LocalStorage.User, JSON.stringify(data.user));
         this.authService.setTokens(data);
         this.authService.userLoggedGithub.set(data.user);
         this.router.navigate(['/dashboard']);
@@ -68,6 +73,7 @@ export class LoadingPageComponent implements OnInit {
     if (this.googleCode === null) return;
     this.authService.loginGoogle(this.googleCode).subscribe({
       next: (data) => {
+        localStorage.setItem(LocalStorage.User, JSON.stringify(data.user));
         this.authService.setTokens(data);
         this.authService.userLoggedGoogle.set(data.user);
         this.router.navigate(['/dashboard']);
