@@ -54,7 +54,7 @@ export class LoadingPageComponent implements OnInit {
       next: (data) => {
         localStorage.setItem(LocalStorage.User, JSON.stringify(data.user));
         this.authService.setTokens(data);
-        this.authService.userLoggedGithub.set(data.user);
+        this.authService.userLogged.set(data.user);
         this.router.navigate(['/dashboard']);
         this.messageService.add({
           severity: 'success',
@@ -75,7 +75,7 @@ export class LoadingPageComponent implements OnInit {
       next: (data) => {
         localStorage.setItem(LocalStorage.User, JSON.stringify(data.user));
         this.authService.setTokens(data);
-        this.authService.userLoggedGoogle.set(data.user);
+        this.authService.userLogged.set(data.user);
         this.router.navigate(['/dashboard']);
         this.messageService.add({
           severity: 'success',

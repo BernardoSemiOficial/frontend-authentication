@@ -17,16 +17,19 @@
     />
   </div>
   <div class="flex gap-2">
-    @if(userLoggedGithub) {
+    @if(userLogged && userLogged.provider === AuthenticationProviders.Github) {
     <app-profile
-      [type]="'github'"
-      [userGithub]="userLoggedGithub"
+      [type]="AuthenticationProviders.Github"
+      [user]="userLogged"
     ></app-profile>
-    } @if(userLoggedGoogle) {
+    } @if(userLogged && userLogged.provider === AuthenticationProviders.Google)
+    {
     <app-profile
-      [type]="'google'"
-      [userGoogle]="userLoggedGoogle"
+      [type]="AuthenticationProviders.Google"
+      [user]="userLogged"
     ></app-profile>
+    } @if(userLogged) {
+    <app-profile [type]="null" [user]="userLogged"></app-profile>
     }
   </div>
 </section>

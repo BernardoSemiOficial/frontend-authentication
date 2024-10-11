@@ -13,7 +13,7 @@ import {
   RegisterPayload,
   RegisterResponse,
 } from '../interfaces/authentication.interface';
-import { UserGithub, UserGoogle } from '../interfaces/user.interface';
+import { UserInfo } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -23,12 +23,7 @@ export class AuthService {
   private readonly router: Router = inject(Router);
   private readonly baseUrl = 'http://localhost:3000/';
 
-  userLoggedGithub = signal<UserGithub | null>(
-    this.getUserLocalStorage() as UserGithub
-  );
-  userLoggedGoogle = signal<UserGoogle | null>(
-    this.getUserLocalStorage() as UserGoogle
-  );
+  userLogged = signal<UserInfo | null>(this.getUserLocalStorage() as UserInfo);
 
   login(user: LoginPayload): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.baseUrl + 'api/auth/login', user);
@@ -108,9 +103,9 @@ export class AuthService {
     );
   }
 
-  getUserLocalStorage(): UserGithub | UserGoogle | null {
+  getUserLocalStorage(): UserInfo | null {
     const userString = localStorage.getItem(LocalStorage.User);
-    const user = userString ? (JSON.parse(userString) as UserGithub) : null;
+    const user = userString ? (JSON.parse(userString) as UserInfo) : null;
     return user;
   }
 }

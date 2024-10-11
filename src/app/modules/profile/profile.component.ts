@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { UserGithub, UserGoogle } from '../../interfaces/user.interface';
+import { AuthenticationProviders } from '../../enums/authentication-providers';
+import { UserInfo } from '../../interfaces/user.interface';
 
 @Component({
   selector: 'app-profile',
@@ -9,7 +10,6 @@ import { UserGithub, UserGoogle } from '../../interfaces/user.interface';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
-  @Input() type!: 'github' | 'google';
-  @Input() userGithub!: UserGithub;
-  @Input() userGoogle!: UserGoogle;
+  @Input() type!: AuthenticationProviders | null;
+  @Input() user!: UserInfo;
 }

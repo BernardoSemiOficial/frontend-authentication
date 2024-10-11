@@ -1,3 +1,17 @@
+import { AuthenticationProviders } from '../enums/authentication-providers';
+
+export interface UserInfo {
+  id: string;
+  name: string;
+  email: string;
+  idProvider: string | null;
+  provider: AuthenticationProviders | null;
+  infoProvider: {
+    google?: UserGoogle;
+    github?: UserGithub;
+  } | null;
+}
+
 export interface UserGoogle {
   id: string;
   email: string;

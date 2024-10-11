@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { LocalStorage } from '../../enums/local-storage.enum';
 import {
   LoginPayload,
   LoginResponse,
@@ -51,7 +52,9 @@ export class LoginComponent {
     };
     this.authService.login(payload).subscribe({
       next: (data: LoginResponse) => {
+        localStorage.setItem(LocalStorage.User, JSON.stringify(data.user));
         this.authService.setTokens(data);
+        this.authService.userLogged.set(data.user);
         this.router.navigate(['/dashboard']);
         this.messageService.add({
           severity: 'success',

@@ -2,7 +2,8 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { UserGithub, UserGoogle } from '../../interfaces/user.interface';
+import { AuthenticationProviders } from '../../enums/authentication-providers';
+import { UserInfo } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { ProfileComponent } from '../profile/profile.component';
@@ -21,13 +22,12 @@ export class DashboardComponent implements OnInit {
   private readonly messageService: MessageService = inject(MessageService);
 
   githubCode!: string | null;
-  userLoggedGithub!: UserGithub | null;
-  userLoggedGoogle!: UserGoogle | null;
+  userLogged!: UserInfo | null;
+  AuthenticationProviders = AuthenticationProviders;
 
   constructor() {
     effect(() => {
-      this.userLoggedGithub = this.authService.userLoggedGithub();
-      this.userLoggedGoogle = this.authService.userLoggedGoogle();
+      this.userLogged = this.authService.userLogged();
     });
   }
 

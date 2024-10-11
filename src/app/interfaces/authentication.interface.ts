@@ -1,4 +1,4 @@
-import { UserGithub, UserGoogle } from './user.interface';
+import { UserInfo } from './user.interface';
 
 export interface LoginPayload {
   email: string;
@@ -8,12 +8,13 @@ export interface LoginPayload {
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
+  user: UserInfo;
 }
 
 export interface LoginGithubResponse {
   accessToken: string;
   refreshToken: string;
-  user: UserGithub;
+  user: UserInfo;
 }
 
 export interface GenerateAuthUrlGoogleResponse {
@@ -23,7 +24,7 @@ export interface GenerateAuthUrlGoogleResponse {
 export interface LoginGoogleResponse {
   accessToken: string;
   refreshToken: string;
-  user: UserGoogle;
+  user: UserInfo;
 }
 
 export interface RegisterPayload {
